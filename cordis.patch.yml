@@ -1,0 +1,25 @@
+# The @argszero/cordis-plugin-subagent-model bundle patch.
+#
+# It needs no deployment-specific config to mount: with an empty config the
+# plugin only *observes* — no selection is set, every subagent keeps the route
+# its delegation inherited, and the sole visible effect is one durable notice
+# per subagent transcript naming the model that child runs on.
+#
+# A route is set at runtime through the `subagent_model` tool (action: "set"),
+# or ahead of time through a profile layer:
+#
+#   - set:
+#       - id: subagent-model
+#         config:
+#           provider: deepseek
+#           model: deepseek-chat
+#           reasoningEffort: high          # optional; omit to let the route decide
+#           toolName: subagent_model       # model-facing tool name
+#           announce: true                 # false = route silently, notice nothing
+#
+# Inside a bundle whose patch already has rows, add the same `insert` entry
+# instead of a second document.
+
+- insert:
+    - id: subagent-model
+      name: '@argszero/cordis-plugin-subagent-model'
