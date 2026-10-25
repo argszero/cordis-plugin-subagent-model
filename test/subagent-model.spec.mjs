@@ -207,7 +207,7 @@ test('the first admitted child step carries the route notice', async () => {
   assert.equal(decision.messages.length, 2)
   const notice = decision.messages[1]
   assert.equal(notice.content[0].text, '[subagent model: parent-route/parent-model]')
-  assert.equal(notice.source.kind, 'plugin')
+  assert.equal(notice.source.kind, 'subagent-model')
   assert.equal(notice.source.plugin, 'subagent-model')
   assert.equal(notice.source.form, 'notice')
   assert.equal(decision.messages[0], message, 'the delegated prompt stays first')

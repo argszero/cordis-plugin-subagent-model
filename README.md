@@ -50,7 +50,7 @@ inheriting a level its adapter may not offer.
 ## Install
 
 ```sh
-npm install @argszero/cordis-plugin-subagent-model
+dsh plugin add @argszero/cordis-plugin-subagent-model
 ```
 
 Mount it the way any bundle patch is mounted (`dsh.bundle.patch` →
@@ -137,7 +137,7 @@ is the failure mode of every plugin that gets this wrong.
 @deepseek-ai/dsh-llm       >=0.1.2-rc.1 <0.2.0 || >=0.1.3-alpha.2 <0.2.0 || >=0.1.5-alpha.1 <0.2.0 || >=0.1.6-alpha.1 <0.2.0
 @deepseek-ai/dsh-session   >=0.1.2-rc.1 <0.2.0 || >=0.1.3-alpha.2 <0.2.0 || >=0.1.5-alpha.1 <0.2.0 || >=0.1.6-alpha.1 <0.2.0
 @deepseek-ai/dsh-subagent  >=0.1.2-rc.1 <0.2.0 || >=0.1.3-alpha.2 <0.2.0 || >=0.1.5-alpha.1 <0.2.0 || >=0.1.6-alpha.1 <0.2.0
-@deepseek-ai/dsh-tools     >=0.1.2-rc.1 <0.2.0 || >=0.1.3-alpha.2 <0.2.0 || >=0.1.5-alpha.1 <0.2.0 || >=0.1.6-alpha.1 <0.2.0
+@deepseek-ai/dsh-tools     >=0.1.2-rc.1 <0.2.0 || >=0.1.3-alpha.2 <0.2.0 || >=0.1.5-alpha.1 <0.2.0 || >=0.1.6-alpha.1 <0.2.0 || >=0.2.1-rc.1 <0.2.1
 ```
 
 A prerelease range only admits its own version tuple, so each supported line is
@@ -154,6 +154,7 @@ checked before the tests execute (`scripts/probe-lines.mjs`).
 | 0.1.3 | `0.1.3-alpha.2` | 24/24 |
 | 0.1.5 | `0.1.5-alpha.1`, `0.1.5-alpha.2`, `0.1.5-rc.1`, `0.1.5-rc.2` | 24/24 |
 | 0.1.6 | `0.1.6-alpha.1`, `0.1.6-alpha.2` | 24/24 |
+| 0.2.1 | `0.2.1-rc.1`, `0.2.1-rc.2`, `0.2.1-rc.3` | 45/45 |
 
 The probe installs with `--legacy-peer-deps` because it pins a subset of the
 harness (the rest floats to the newest patch of the same line, and an alpha's

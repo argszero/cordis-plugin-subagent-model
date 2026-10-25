@@ -23,6 +23,9 @@ const PUBLISHED = [
   '0.1.3-alpha.2',
   '0.1.5-alpha.1', '0.1.5-alpha.2', '0.1.5-rc.1', '0.1.5-rc.2',
   '0.1.6-alpha.1', '0.1.6-alpha.2',
+  '0.2.0-rc.1', '0.2.0-rc.2',
+  '0.2.1-alpha.1', '0.2.1-alpha.2', '0.2.1-alpha.3', '0.2.1-alpha.4',
+  '0.2.1-alpha.5', '0.2.1-rc.1', '0.2.1-rc.2', '0.2.1-rc.3',
 ]
 
 /**
@@ -36,6 +39,7 @@ const SUPPORTED = [
   '0.1.3-alpha.2',
   '0.1.5-alpha.1', '0.1.5-alpha.2', '0.1.5-rc.1', '0.1.5-rc.2',
   '0.1.6-alpha.1', '0.1.6-alpha.2',
+  '0.2.1-rc.1', '0.2.1-rc.2', '0.2.1-rc.3',
 ]
 
 const DSH = [
@@ -71,6 +75,14 @@ for (const dep of DSH) {
     assert.equal(satisfies('0.1.1-rc.2', pkg.peerDependencies[dep]), false, 'the pre-depth helper line is refused')
     assert.equal(satisfies('0.1.2-alpha.5', pkg.peerDependencies[dep]), false, 'the same line\'s alphas are refused')
   })
+
+  test(`peer range for ${dep} admits the newest shipped line`, () => {
+    // The defect this release fixes: the whole 0.2.1 line was refused, so a
+    // user on the newest dsh could not install the plugin at all.
+    for (const line of ['0.2.1-rc.1', '0.2.1-rc.2', '0.2.1-rc.3']) {
+      assert.equal(satisfies(line, pkg.peerDependencies[dep]), true, `${dep} must admit ${line}`)
+    }
+  })
 }
 
 test('the ranges are stated per line rather than as a caret on a prerelease', () => {
@@ -79,7 +91,12 @@ test('the ranges are stated per line rather than as a caret on a prerelease', ()
   for (const dep of DSH) {
     const range = pkg.peerDependencies[dep]
     assert.ok(!range.startsWith('^'), `"${range}" hides the line scope behind a caret`)
-    assert.equal(range.split('||').length, SUPPORTED.length >= 4 ? 4 : range.split('||').length)
+    const tuples = new Set(SUPPORTED.map((v) => v.split('-')[0]))
+    assert.equal(
+      range.split('||').length,
+      tuples.size,
+      `"${range}" has ${range.split('||').length} clause(s) for ${tuples.size} supported tuple(s)`,
+    )
   }
 })
 

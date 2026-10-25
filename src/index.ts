@@ -53,6 +53,27 @@ import type { UserMessage } from '@deepseek-ai/dsh-session'
 export const name = 'subagent-model'
 export const inject = ['tools']
 
+/**
+ * The durable source kind this plugin stamps on the notices it injects.
+ *
+ * `MessageSourceMap` is merge-extensible and its base entry declares no shared
+ * catch-all `plugin` kind: each producer names its own, which is what every
+ * in-tree producer does (`dsh-schedule`, `dsh-time-context`, ...). Augmenting
+ * the map here is therefore the successor to `kind: 'plugin'` — not a literal
+ * bent to fit the union — and the `plugin` field is kept so the durable record
+ * still answers which plugin sent it.
+ */
+declare module '@deepseek-ai/dsh-llm' {
+  interface MessageSourceMap {
+    'subagent-model': {
+      kind: 'subagent-model'
+      plugin?: string
+      form?: 'notice'
+      summary?: string
+    }
+  }
+}
+
 /** Plugin configuration. */
 export interface Config {
   /** Provider route applied to subagent requests; inherited when absent. */
@@ -175,7 +196,7 @@ function notice(text: string, summary: string): UserMessage {
   return createUserMessage({
     content: [{ type: 'text' as const, text }],
     source: {
-      kind: 'plugin' as const,
+      kind: 'subagent-model' as const,
       plugin: name,
       form: 'notice' as const,
       summary: boundContextSummary(summary),
